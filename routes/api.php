@@ -1,15 +1,18 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+// Rotas públicas
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// Rota autenticada
-Route::middleware('auth:sanctum')->get('/authenticated-user', function (Request $request) {
-    return response()->json(['user' => $request->user()]);
+// Rotas autenticadas
+Route::middleware('auth:sanctum')->group(function () {
+    Route::prefix('/user')->group(function () {
+
+        Route::get('/', [UserController::class, 'show']);
+        Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+    });
 });
