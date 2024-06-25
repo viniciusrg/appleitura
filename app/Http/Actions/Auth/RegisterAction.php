@@ -19,7 +19,7 @@ class RegisterAction
             ]);
 
             $user->permission()->create([
-                'type' => 'common' // ou outros atributos necessários
+                'type' => 'common'
             ]);
 
             DB::commit();
