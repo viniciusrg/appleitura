@@ -11,11 +11,6 @@ class LoginAction
     public function execute($request)
     {
         try {
-            $request->validate([
-                'email' => 'required|string|email',
-                'password' => 'required|string',
-            ]);
-
             if (!Auth::attempt($request->only('email', 'password'))) {
                 throw ValidationException::withMessages([
                     'email' => ['The provided credentials are incorrect.'],
@@ -26,9 +21,11 @@ class LoginAction
             $token = $user->createToken('authToken')->plainTextToken;
 
             return response()->json(['token' => $token], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => $e->getMessage()], 422);
         } catch (\Exception $e) {
-            Log::error(['User login error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()]);
+            Log::error('User login error: ' . $e->getMessage());
+            return response()->json(['message' => 'Failed to login.'], 500);
         }
     }
 }
