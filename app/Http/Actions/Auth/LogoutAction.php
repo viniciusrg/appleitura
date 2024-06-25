@@ -14,7 +14,7 @@ class LogoutAction
             return response()->json(['message:' => 'Successfully logged out.'], 200);
         } catch (\Exception $e) {
             Log::error(['User logout error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()]);
+            return response()->json(['message:' => $e->getMessage()], 500);
         }
     }
 }

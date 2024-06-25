@@ -15,8 +15,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // User routes
         Route::get('/', [UserController::class, 'show']);
+        Route::patch('/updateAccount', [UserController::class, 'updateAccount']);
+        Route::delete('/deleteAccount', [UserController::class, 'deleteAccount']);
+
+        // Auth routes
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::patch('/updateAccount', [AuthController::class, 'updateAccount']);
 
         // Questions routes
         Route::post('/StoreAnswer', [QuestionsController::class, 'store']);

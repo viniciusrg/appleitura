@@ -24,7 +24,7 @@ class StoreAnswer
             return new QuestionResponse($questions);
         } catch (\Exception $e) {
             Log::error(['Store answer error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()]);
+            return response()->json(['message:' => $e->getMessage()], 500);
         }
     }
 }

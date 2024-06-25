@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Actions\Auth\LoginAction;
 use App\Http\Actions\Auth\LogoutAction;
 use App\Http\Actions\Auth\RegisterAction;
-use App\Http\Actions\Auth\UpdateAccountAction;
 use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\StoreUpdateUserRequest;
 use Illuminate\Http\Request;
@@ -27,12 +26,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $data = new LogoutAction();
-        return $data->execute($request);
-    }
-
-    public function updateAccount(Request $request)
-    {
-        $data = new UpdateAccountAction();
         return $data->execute($request);
     }
 }

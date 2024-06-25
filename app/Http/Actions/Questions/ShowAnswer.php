@@ -24,7 +24,7 @@ class ShowAnswer
             return new QuestionResponse($questions);
         } catch (\Exception $e) {
             Log::error(['Show answer error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()]);
+            return response()->json(['message:' => $e->getMessage()], 500);
         }
     }
 }

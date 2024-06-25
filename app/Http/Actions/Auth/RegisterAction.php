@@ -28,7 +28,7 @@ class RegisterAction
         } catch (\Exception $e) {
             DB::roolBack();
             Log::error(['User register error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()]);
+            return response()->json(['message:' => $e->getMessage()], 500);
         }
     }
 }
