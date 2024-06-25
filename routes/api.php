@@ -24,6 +24,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Questions routes
         Route::post('/StoreAnswer', [QuestionsController::class, 'store']);
+    
+        // Book routes
+        Route::get('/books', [BookController::class, 'index']);
+        Route::get('/book/{book_id}', [BookController::class, 'show']);
     });
 
     // Admin routes
@@ -35,8 +39,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
             // Create book
             Route::post('/createBook', [BookController::class, 'store']);
-            Route::get('/books', [BookController::class, 'index']);
-            Route::get('/book/{book_id}', [BookController::class, 'show']);
         });
     });
 });
