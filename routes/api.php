@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -23,9 +24,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Questions routes
         Route::post('/StoreAnswer', [QuestionsController::class, 'store']);
+    });
+
+    // Admin routes
+    Route::prefix('/admin')->group(function () {
 
         Route::middleware('admin')->group(function () {
-            Route::get('/ShowAnswer/{user_id}', [QuestionsController::class, 'show']);
+            // Show user
+            Route::get('/answer/{user_id}', [QuestionsController::class, 'show']);
+
+            // Create book
+            Route::post('/createBook', [BookController::class, 'store']);
+            Route::get('/books', [BookController::class, 'index']);
+            Route::get('/book/{book_id}', [BookController::class, 'show']);
         });
     });
 });

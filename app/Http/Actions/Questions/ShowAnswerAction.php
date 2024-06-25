@@ -2,11 +2,11 @@
 
 namespace App\Http\Actions\Questions;
 
-use App\Http\Resources\QuestionResponse;
+use App\Http\Resources\QuestionResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
-class ShowAnswer
+class ShowAnswerAction
 {
     public function execute($user_id)
     {
@@ -21,7 +21,7 @@ class ShowAnswer
                 return response()->json([], 200);
             }
 
-            return new QuestionResponse($questions);
+            return new QuestionResource($questions);
         } catch (\Exception $e) {
             Log::error(['Show answer error: '] . $e);
             return response()->json(['message:' => $e->getMessage()], 500);

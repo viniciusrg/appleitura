@@ -2,11 +2,11 @@
 
 namespace App\Http\Actions\Questions;
 
-use App\Http\Resources\QuestionResponse;
+use App\Http\Resources\QuestionResource;
 use App\Models\Question;
 use Illuminate\Support\Facades\Log;
 
-class StoreAnswer
+class StoreAnswerAction
 {
     public function execute($request)
     {
@@ -21,7 +21,7 @@ class StoreAnswer
             $questions = new Question($data);
             $user->question()->save($questions);
 
-            return new QuestionResponse($questions);
+            return new QuestionResource($questions);
         } catch (\Exception $e) {
             Log::error(['Store answer error: '] . $e);
             return response()->json(['message:' => $e->getMessage()], 500);

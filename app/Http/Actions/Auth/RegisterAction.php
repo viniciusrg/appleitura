@@ -22,9 +22,11 @@ class RegisterAction
                 'type' => 'common'
             ]);
 
+            $token = $user->createToken('authToken')->plainTextToken;
+
             DB::commit();
 
-            return response()->json(['message' => 'User created successfully', 'user' => $user], 201);
+            return response()->json(['message' => 'User created successfully', 'user' => $user, 'token' => $token], 201);
         } catch (\Exception $e) {
             DB::roolBack();
             Log::error(['User register error: '] . $e);
