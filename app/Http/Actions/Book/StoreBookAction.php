@@ -11,7 +11,7 @@ class StoreBookAction
     public function execute($request)
     {
         try {
-            $data = $request->only(['title', 'description', 'author', 'read_time', 'content', 'content_audio']);
+            $data = $request->only(['title', 'description', 'cover', 'author', 'read_time', 'content', 'content_audio']);
 
             $book = Book::create($data);
 

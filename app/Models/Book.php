@@ -17,6 +17,7 @@ class Book extends Model
         'read_time',
         'total_views',
         'week_views',
+        'cover',
         'content',
         'content_audio'
     ];

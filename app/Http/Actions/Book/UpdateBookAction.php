@@ -11,7 +11,7 @@ class UpdateBookAction
     public function execute($request)
     {
         try {
-            $data = $request->only(['book_id', 'title', 'description', 'author', 'read_time', 'content', 'content_audio']);
+            $data = $request->only(['book_id', 'title', 'description', 'author', 'read_time', 'content', 'content_audio', 'total_views', 'week_views']);
 
             $book = Book::find($data['book_id']);
 
