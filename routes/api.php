@@ -39,6 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
             // Create book
             Route::post('/createBook', [BookController::class, 'store']);
+            Route::patch('/updateBook', [BookController::class, 'update']);
         });
     });
 });
