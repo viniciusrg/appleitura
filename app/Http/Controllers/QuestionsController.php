@@ -15,9 +15,9 @@ class QuestionsController extends Controller
         return $data->execute($request);
     }
 
-    public function show(Request $request)
+    public function show(Request $request, string $user_id)
     {
         $data = new ShowAnswer();
-        return $data->execute($request);
+        return $data->execute($request, $user_id);
     }
 }

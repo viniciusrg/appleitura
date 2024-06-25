@@ -21,8 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/StoreAnswer', [QuestionsController::class, 'store']);
 
         Route::middleware('admin')->group(function () {
-            // Fazer a rota show por ID e apenas para ADMIN ver
-            Route::get('/ShowAnswer', [QuestionsController::class, 'show']);
+            Route::get('/ShowAnswer/{user_id}', [QuestionsController::class, 'show']);
         });
     });
 });
