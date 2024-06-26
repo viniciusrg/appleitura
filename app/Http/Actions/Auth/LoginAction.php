@@ -20,7 +20,7 @@ class LoginAction
             $user = $request->user();
             $token = $user->createToken('authToken')->plainTextToken;
 
-            return response()->json(['token' => $token], 200);
+            return response()->json(['message:' => 'User logged in.', 'token' => $token], 200);
         } catch (ValidationException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         } catch (\Exception $e) {
