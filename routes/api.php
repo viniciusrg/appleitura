@@ -40,7 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::middleware('admin')->group(function () {
             // Show user
-            Route::get('/answer/{user_id}', [QuestionsController::class, 'show']);
+            Route::get('/answer', [QuestionsController::class, 'index']);
 
             // Admin book routes
             Route::post('/book', [BookController::class, 'store']);

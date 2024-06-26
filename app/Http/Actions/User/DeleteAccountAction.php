@@ -13,7 +13,7 @@ class DeleteAccountAction
             $user = User::find($request->user()->id);
             $user->delete();
 
-            return response()->json(['message' => 'User delete account successfully'], 200);
+            return response(null, 204);
         } catch (\Exception $e) {
             Log::error(['User delete account error: '] . $e);
             return response()->json(['message:' => $e->getMessage()], 500);

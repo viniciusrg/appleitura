@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Actions\Questions\ShowAnswerAction;
+use App\Http\Actions\Questions\IndexAnswerAction;
 use App\Http\Actions\Questions\StoreAnswerAction;
 use App\Http\Requests\StoreAnswerRequest;
 use Illuminate\Http\Request;
@@ -15,9 +15,9 @@ class QuestionsController extends Controller
         return $data->execute($request);
     }
 
-    public function show(string $user_id)
+    public function index()
     {
-        $data = new ShowAnswerAction();
-        return $data->execute($user_id);
+        $data = new IndexAnswerAction();
+        return $data->execute();
     }
 }
