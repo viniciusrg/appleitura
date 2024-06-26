@@ -4,7 +4,6 @@ Esta API foi desenvolvida para ser consumida pelo front-end (React Native) do ap
 A API conta com rotas de cadastro de usuários, funcionalidades de favoritos, continuar lendo, área administrativa e etc.
 
 - [Instalação](#instalação)
-- [Uso](#uso)
 - [Links Adicionais](#links-adicionais)
 
 ## Instalação (Doc V1)
@@ -22,6 +21,7 @@ A API conta com rotas de cadastro de usuários, funcionalidades de favoritos, co
 - php laravel key:generate
 - php artsan migration
 ```
+
 ## Links Adicionais
 
 LinkedIn: https://www.linkedin.com/in/vinicius-ribeiro-goulart/
