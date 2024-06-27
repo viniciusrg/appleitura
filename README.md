@@ -1,4 +1,4 @@
-# API para aplicativo de aúdiobook e leitura
+# API para aplicativo de audiobook e leitura
 
 Esta API foi desenvolvida utilizando o framework Laravel 10 para ser consumida pelo front-end, React Native, do aplicativo de leitura que será publicado na Apple Store e na Google Play no futuro.
 A API conta com rotas de cadastro de usuários, permissões, área administrativa, funcionalidades de favoritos, continuar lendo e etc.
