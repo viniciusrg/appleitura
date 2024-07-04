@@ -25,6 +25,7 @@ class BookResource extends JsonResource
             'total_views' => $this->total_views,
             'week_views' => $this->week_views,
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d'),
+            'is_favorite' => $this->favorites()->get()->isNotEmpty(),
         ];
     }
 }

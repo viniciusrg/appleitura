@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Actions\Questions\IndexAnswerAction;
 use App\Http\Actions\Questions\StoreAnswerAction;
 use App\Http\Requests\StoreAnswerRequest;
-use Illuminate\Http\Request;
 
 class QuestionsController extends Controller
 {

@@ -17,6 +17,8 @@ class ShowBookAction
                 return response()->json(['message:' => 'Book not found'], 404);
             }
 
+            // dd($book->favorites()->get());
+
             return new BookResource($book);
         } catch (\Exception $e) {
             Log::error(['Show book error: '] . $e);

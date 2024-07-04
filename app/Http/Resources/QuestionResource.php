@@ -16,7 +16,7 @@ class QuestionResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $request->user()->email,
+            'e-mail' => $request->user()->email,
             'q1' => $this->q1,
             'q2' => $this->q2,
             'q3' => $this->q3,

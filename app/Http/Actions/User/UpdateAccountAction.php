@@ -11,7 +11,7 @@ class UpdateAccountAction
     public function execute($request)
     {
         try {
-            $data = ['email' => $request->email, 'password' => Hash::make($request->password)];
+            $data = ['password' => Hash::make($request->password)];
 
             $user = User::find($request->user()->id);
             $user->update($data);
