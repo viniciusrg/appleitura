@@ -29,6 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Book routes
         Route::get('/books', [BookController::class, 'index']);
         Route::get('/book/{book_id}', [BookController::class, 'show']);
+        Route::get('topBooks', [BookController::class, 'topBooksIndex']);
         // Rota organizando os top 10 views.
 
         // Favorite routes
