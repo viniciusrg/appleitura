@@ -13,11 +13,15 @@ class ShowBookAction
         try {
             $book = Book::find($book_id);
 
-            if (!$book){
+            if (!$book) {
                 return response()->json(['message:' => 'Book not found'], 404);
             }
 
-            // dd($book->favorites()->get());
+            // Incrementando o total_views do livro.
+            $book->update(['total_views' => $book->total_views + 1]);
+
+            // Gerenciando o week_views do livro.
+            $book->update(['week_views' => $book->week_views + 1]);
 
             return new BookResource($book);
         } catch (\Exception $e) {

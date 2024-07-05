@@ -11,7 +11,7 @@ class ExclusiveBooksIndexAction
     public function execute()
     {
         try {
-            $books = Book::orderBy('total_views')->take(10)->get();
+            $books = Book::orderBy('total_views', 'desc')->take(10)->get();
 
             return BookResource::collection($books);
         } catch (\Exception $e) {
