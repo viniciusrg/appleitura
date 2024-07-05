@@ -6,12 +6,12 @@ use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Support\Facades\Log;
 
-class TopWeekBooksActiuon
+class TopWeekBooksAction
 {
     public function execute()
     {
         try {
-            $books = Book::orderBy('week_views')->take(10)->get();
+            $books = Book::orderBy('week_views', 'desc')->take(10)->get();
 
             return BookResource::collection($books);
         } catch (\Exception $e) {

@@ -6,7 +6,7 @@ use App\Http\Actions\Book\IndexBookAction;
 use App\Http\Actions\Book\ShowBookAction;
 use App\Http\Actions\Book\StoreBookAction;
 use App\Http\Actions\Book\ExclusiveBooksIndexAction;
-use App\Http\Actions\Book\TopWeekBooksActiuon;
+use App\Http\Actions\Book\TopWeekBooksAction;
 use App\Http\Actions\Book\UpdateBookAction;
 use App\Http\Requests\StoreBookRequest;
 
@@ -44,7 +44,7 @@ class BookController extends Controller
 
     public function topWeekBooksIndex()
     {
-        $book = new TopWeekBooksActiuon();
+        $book = new TopWeekBooksAction();
         return $book->execute();
     }
 }
