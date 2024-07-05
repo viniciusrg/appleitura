@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Actions\Book\IndexBookAction;
 use App\Http\Actions\Book\ShowBookAction;
 use App\Http\Actions\Book\StoreBookAction;
-use App\Http\Actions\Book\TopBooksIndexAction;
+use App\Http\Actions\Book\ExclusiveBooksIndexAction;
+use App\Http\Actions\Book\TopWeekBooksActiuon;
 use App\Http\Actions\Book\UpdateBookAction;
 use App\Http\Requests\StoreBookRequest;
 
@@ -35,9 +36,15 @@ class BookController extends Controller
         return $book->execute($book_id);
     }
 
-    public function topBooksIndex()
+    public function exclusiveBooksIndex()
     {
-        $book = new TopBooksIndexAction();
+        $book = new ExclusiveBooksIndexAction();
+        return $book->execute();
+    }
+
+    public function topWeekBooksIndex()
+    {
+        $book = new TopWeekBooksActiuon();
         return $book->execute();
     }
 }

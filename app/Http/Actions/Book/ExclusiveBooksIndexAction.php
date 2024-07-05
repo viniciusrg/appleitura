@@ -6,7 +6,7 @@ use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Support\Facades\Log;
 
-class TopBooksIndexAction
+class ExclusiveBooksIndexAction
 {
     public function execute()
     {
