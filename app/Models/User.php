@@ -49,8 +49,13 @@ class User extends Authenticatable
 
     public function keepReadings()
     {
-        return $this->hasMany(KeepReading::class);
+        return $this->belongsToMany(Book::class, 'keep_readings')->withTimestamps();
     }
+
+    // public function keepReadings()
+    // {
+    //     return $this->hasMany(KeepReading::class);
+    // }
 
     public function question()
     {

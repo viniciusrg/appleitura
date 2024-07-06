@@ -22,7 +22,13 @@ class Book extends Model
         'content_audio'
     ];
 
-    public function favorites(){
+    public function favorites()
+    {
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
+
+    public function keepReadings()
+    {
+        return $this->belongsToMany(User::class, 'keep_readings')->withTimestamps();
     }
 }

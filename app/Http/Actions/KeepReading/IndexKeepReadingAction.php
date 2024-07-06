@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Actions\Book;
+namespace App\Http\Actions\KeepReading;
 
 use App\Http\Resources\BookResource;
-use App\Models\Book;
 use Illuminate\Support\Facades\Log;
 
-class IndexBookAction
+class IndexKeepReadingAction
 {
-    public function execute()
+    public function execute($request)
     {
         try {
-            $books = Book::paginate(8);
+            $user = $request->user();
+            $books = $user->keepReadings()->paginate(8);
 
             return BookResource::collection($books);
         } catch (\Exception $e) {
-            Log::error(['Store book error: '] . $e);
+            Log::error(['Index keepREadings error: '] . $e);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

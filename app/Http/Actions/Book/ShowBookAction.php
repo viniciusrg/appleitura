@@ -14,7 +14,7 @@ class ShowBookAction
             $book = Book::find($book_id);
 
             if (!$book) {
-                return response()->json(['message:' => 'Book not found'], 404);
+                return response()->json(['message' => 'Book not found'], 404);
             }
 
             // Incrementando o total_views do livro.
@@ -26,7 +26,7 @@ class ShowBookAction
             return new BookResource($book);
         } catch (\Exception $e) {
             Log::error(['Show book error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

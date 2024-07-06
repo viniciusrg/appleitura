@@ -15,7 +15,7 @@ class StoreAnswerAction
             $user = $request->user();
 
             if ($user->question){
-                return response()->json(['message:' => 'User already has a response.'], 400);
+                return response()->json(['message' => 'User already has a response.'], 400);
             }
 
             $questions = new Question($data);
@@ -24,7 +24,7 @@ class StoreAnswerAction
             return new QuestionResource($questions);
         } catch (\Exception $e) {
             Log::error(['Store answer error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

@@ -13,7 +13,7 @@ class GetUserAction
             return new UserResource($request->user());
         } catch (\Exception $e) {
             Log::error(['Show user error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }
