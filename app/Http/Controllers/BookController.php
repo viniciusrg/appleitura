@@ -6,6 +6,7 @@ use App\Http\Actions\Book\IndexBookAction;
 use App\Http\Actions\Book\ShowBookAction;
 use App\Http\Actions\Book\StoreBookAction;
 use App\Http\Actions\Book\ExclusiveBooksIndexAction;
+use App\Http\Actions\Book\RandomIndexAction;
 use App\Http\Actions\Book\TopWeekBooksAction;
 use App\Http\Actions\Book\UpdateBookAction;
 use App\Http\Requests\StoreBookRequest;
@@ -45,6 +46,12 @@ class BookController extends Controller
     public function topWeekBooksIndex()
     {
         $book = new TopWeekBooksAction();
+        return $book->execute();
+    }
+
+    public function randomIndex()
+    {
+        $book = new RandomIndexAction();
         return $book->execute();
     }
 }
