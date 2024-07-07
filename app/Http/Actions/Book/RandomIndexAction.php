@@ -4,14 +4,17 @@ namespace App\Http\Actions\Book;
 
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
 
 class RandomIndexAction
 {
-    public function execute()
+    public function execute($request)
     {
         try {
-            $books = Book::inRandomOrder()->paginate(8);
+            $user = $request->user();
+            $categoryIds = UserCategoryServices::getCategoryIds($user);
+            $books = Book::InCategories($categoryIds)->inRandomOrder()->paginate(8);
 
             return BookResource::collection($books);
         } catch (\Exception $e) {

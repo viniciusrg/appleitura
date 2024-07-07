@@ -4,6 +4,7 @@ namespace App\Http\Actions\Book;
 
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
 
 class IndexBookAction
@@ -12,8 +13,7 @@ class IndexBookAction
     {
         try {
             $user = $request->user();
-
-            $categoryIds = $user->categories->pluck('id')->toArray();
+            $categoryIds = UserCategoryServices::getCategoryIds($user);
             $books = Book::InCategories($categoryIds)->orderBy('id', 'desc')->paginate(8);
 
             return BookResource::collection($books);

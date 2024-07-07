@@ -4,14 +4,18 @@ namespace App\Http\Actions\Book;
 
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
 
 class ShowBookAction
 {
-    public function execute($book_id)
+    public function execute($request, $book_id)
     {
         try {
-            $book = Book::find($book_id);
+            // $book = Book::find($book_id);
+            $user = $request->user();
+            $categoryIds = UserCategoryServices::getCategoryIds($user);
+            $book = Book::InCategories($categoryIds)->find($book_id);
 
             if (!$book) {
                 return response()->json(['message' => 'Book not found'], 404);

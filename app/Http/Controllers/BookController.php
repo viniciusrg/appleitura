@@ -32,27 +32,27 @@ class BookController extends Controller
         return $book->execute($request);
     }
 
-    public function show(string $book_id)
+    public function show(Request $request, string $book_id)
     {
         $book = new ShowBookAction();
-        return $book->execute($book_id);
+        return $book->execute($request, $book_id);
     }
 
-    public function exclusiveBooksIndex()
+    public function exclusiveBooksIndex(Request $request)
     {
         $book = new ExclusiveBooksIndexAction();
-        return $book->execute();
+        return $book->execute($request);
     }
 
-    public function topWeekBooksIndex()
+    public function topWeekBooksIndex(Request $request)
     {
         $book = new TopWeekBooksAction();
-        return $book->execute();
+        return $book->execute($request);
     }
 
-    public function randomIndex()
+    public function randomIndex(Request $request)
     {
         $book = new RandomIndexAction();
-        return $book->execute();
+        return $book->execute($request);
     }
 }
