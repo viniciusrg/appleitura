@@ -10,6 +10,7 @@ use App\Http\Actions\Book\RandomIndexAction;
 use App\Http\Actions\Book\TopWeekBooksAction;
 use App\Http\Actions\Book\UpdateBookAction;
 use App\Http\Requests\StoreBookRequest;
+use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
@@ -25,10 +26,10 @@ class BookController extends Controller
         return $book->execute($request);
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $book = new IndexBookAction();
-        return $book->execute();
+        return $book->execute($request);
     }
 
     public function show(string $book_id)

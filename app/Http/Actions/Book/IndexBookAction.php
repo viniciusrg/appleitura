@@ -8,10 +8,13 @@ use Illuminate\Support\Facades\Log;
 
 class IndexBookAction
 {
-    public function execute()
+    public function execute($request)
     {
         try {
-            $books = Book::orderBy('id', 'desc')->paginate(8);
+            $user = $request->user();
+
+            $categoryIds = $user->categories->pluck('id')->toArray();
+            $books = Book::InCategories($categoryIds)->orderBy('id', 'desc')->paginate(8);
 
             return BookResource::collection($books);
         } catch (\Exception $e) {
