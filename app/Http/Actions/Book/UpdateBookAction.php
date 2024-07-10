@@ -5,6 +5,7 @@ namespace App\Http\Actions\Book;
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateBookAction
 {
@@ -15,8 +16,19 @@ class UpdateBookAction
 
             $book = Book::find($data['book_id']);
 
-            if (!$book){
+            if (!$book) {
                 return response()->json(['message' => 'Book not found.'], 404);
+            }
+
+            if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+
+                // Deletar a cover antiga
+                if ($book->cover) {
+                    Storage::disk('public')->delete($book->cover);
+                }
+
+                $coverPath = $request->file('cover')->store("covers/{$data['title']}", 'public');
+                $data['cover'] = $coverPath;
             }
 
             $book->update($data);

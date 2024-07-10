@@ -29,6 +29,8 @@ class StoreBookRequest extends FormRequest
             'read_time' => 'required|string|max:255',
             'content' => 'required|string',
             'content_audio' => 'nullable|file|mimetypes:audio/mpeg,audio/wav',
+            'cover' => 'nullable',
+            'categories_id' => 'nullable',
         ];
     }
 }

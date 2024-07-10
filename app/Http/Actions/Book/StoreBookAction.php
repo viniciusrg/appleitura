@@ -13,7 +13,12 @@ class StoreBookAction
     {
         DB::beginTransaction();
         try {
-            $data = $request->only(['title', 'description', 'cover', 'author', 'read_time', 'content', 'content_audio', 'categories_id']);
+            $data = $request->only(['title', 'description', 'author', 'read_time', 'content', 'content_audio', 'categories_id']);
+
+            if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
+                $coverPath = $request->file('cover')->store("covers/{$data['title']}", 'public');
+                $data['cover'] = $coverPath;
+            }
 
             $book = Book::create($data);
             $book->categories()->attach($data['categories_id']);
@@ -22,8 +27,8 @@ class StoreBookAction
 
             return new BookResource($book);
         } catch (\Exception $e) {
-            DB::roolBack();
-            Log::error(['Store book error: '] . $e);
+            DB::rollBack();
+            Log::error('Store book error: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
