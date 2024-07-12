@@ -35,6 +35,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/topWeekBooks', [BookController::class, 'topWeekBooksIndex']);
         Route::get('/books/random', [BookController::class, 'randomIndex']);
 
+        // Chapter routes
+        Route::get('/book/chapters/{book_id}/{chapter_number}', [ChapterController::class, 'show']);
+
         // Favorite routes
         Route::post('/favorite/book/{book_id}', [FavoriteController::class, 'store']);
         Route::get('/favorite/book', [FavoriteController::class, 'index']);
@@ -57,7 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
             // Chapters routes
             Route::post('/book/chapters', [ChapterController::class, 'store']);
-            Route::get('/book/chapters/{book_id}/{chapter_number}', [ChapterController::class, 'show']);
         });
     });
 });
