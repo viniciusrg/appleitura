@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\KeepReadingController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,10 +31,20 @@ Route::middleware('auth:sanctum')->group(function () {
         // Book routes
         Route::get('/books', [BookController::class, 'index']);
         Route::get('/book/{book_id}', [BookController::class, 'show']);
+        Route::get('/exclusiveBooks', [BookController::class, 'exclusiveBooksIndex']);
+        Route::get('/topWeekBooks', [BookController::class, 'topWeekBooksIndex']);
+        Route::get('/books/random', [BookController::class, 'randomIndex']);
+
+        // Chapter routes
+        Route::get('/book/chapters/{book_id}/{chapter_number}', [ChapterController::class, 'show']);
 
         // Favorite routes
         Route::post('/favorite/book/{book_id}', [FavoriteController::class, 'store']);
         Route::get('/favorite/book', [FavoriteController::class, 'index']);
+
+        // Keep reading
+        Route::post('/keepReading/{book_id}', [KeepReadingController::class, 'store']);
+        Route::get('/keepReading', [KeepReadingController::class, 'index']);
     });
 
     // Admin routes
@@ -45,6 +57,9 @@ Route::middleware('auth:sanctum')->group(function () {
             // Admin book routes
             Route::post('/book', [BookController::class, 'store']);
             Route::patch('/book', [BookController::class, 'update']);
+
+            // Chapters routes
+            Route::post('/book/chapters', [ChapterController::class, 'store']);
         });
     });
 });

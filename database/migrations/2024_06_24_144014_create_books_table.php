@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('total_views')->default(0);
             $table->integer('week_views')->default(0);
             $table->string('cover');
-            $table->string('content');
+            // $table->string('content');
             $table->string('content_audio')->nullable();
             $table->timestamps();
         });

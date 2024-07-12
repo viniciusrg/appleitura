@@ -7,14 +7,14 @@ use App\Models\Book;
 use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
 
-class IndexBookAction
+class RandomIndexAction
 {
     public function execute($request)
     {
         try {
             $user = $request->user();
             $categoryIds = UserCategoryServices::getCategoryIds($user);
-            $books = Book::InCategories($categoryIds)->orderBy('id', 'desc')->paginate(8);
+            $books = Book::InCategories($categoryIds)->inRandomOrder()->paginate(8);
 
             return BookResource::collection($books);
         } catch (\Exception $e) {

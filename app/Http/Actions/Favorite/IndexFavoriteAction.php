@@ -16,7 +16,7 @@ class IndexFavoriteAction
             return BookResource::collection($favorites);
         } catch (\Exception $e) {
             Log::error(['Index favorites error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

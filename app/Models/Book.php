@@ -22,7 +22,28 @@ class Book extends Model
         'content_audio'
     ];
 
-    public function favorites(){
+    public function scopeInCategories($query, array $categoryIds)
+    {
+        return $query->whereHas('categories', function ($query) use ($categoryIds) {
+            $query->whereIn('categories.id', $categoryIds);
+        });
+    }
+
+    public function favorites()
+    {
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
+    }
+
+    public function keepReadings()
+    {
+        return $this->belongsToMany(User::class, 'keep_readings')->withTimestamps();
+    }
+
+    public function categories(){
+        return $this->belongsToMany(Category::class, 'book_category');
+    }
+
+    public function chapters(){
+        return $this->hasMany(Chapter::class);
     }
 }

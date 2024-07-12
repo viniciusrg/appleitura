@@ -22,7 +22,7 @@ class IndexAnswerAction
             return response()->json($questions, 200);
         } catch (\Exception $e) {
             Log::error(['Show answer error: '] . $e);
-            return response()->json(['message:' => $e->getMessage()], 500);
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

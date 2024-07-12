@@ -49,7 +49,7 @@ class User extends Authenticatable
 
     public function keepReadings()
     {
-        return $this->hasMany(KeepReading::class);
+        return $this->belongsToMany(Book::class, 'keep_readings')->withTimestamps();
     }
 
     public function question()
@@ -57,9 +57,9 @@ class User extends Authenticatable
         return $this->hasOne(Question::class);
     }
 
-    public function categorie()
+    public function categories()
     {
-        return $this->belongsTo(Categorie::class);
+        return $this->BelongsToMany(Category::class, 'user_category');
     }
 
     public function permission()

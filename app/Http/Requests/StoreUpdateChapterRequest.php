@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBookRequest extends FormRequest
+class StoreUpdateChapterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,13 +23,9 @@ class StoreBookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:1000',
-            'author' => 'required|string|max:255',
-            'read_time' => 'required|string|max:255',
-            'content_audio' => 'nullable|file|mimetypes:audio/mpeg,audio/wav',
-            'cover' => 'nullable',
-            'categories_id' => 'nullable',
+            'subtitle' => 'required|string|max:255',
+            'content' => 'required|string',
+            'chapter_number' => 'required|integer|unique:chapters,chapter_number,NULL,id,book_id,' . $this->book_id,
         ];
     }
 }
