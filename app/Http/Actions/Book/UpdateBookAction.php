@@ -12,7 +12,7 @@ class UpdateBookAction
     public function execute($request)
     {
         try {
-            $data = $request->only(['book_id', 'title', 'description', 'author', 'read_time', 'content', 'content_audio', 'total_views', 'week_views', 'categories_id']);
+            $data = $request->only(['book_id', 'title', 'description', 'author', 'read_time', 'content_audio', 'total_views', 'week_views', 'categories_id']);
 
             $book = Book::find($data['book_id']);
 

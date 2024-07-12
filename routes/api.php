@@ -57,6 +57,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
             // Chapters routes
             Route::post('/book/chapters', [ChapterController::class, 'store']);
+            Route::get('/book/chapters/{book_id}/{chapter_number}', [ChapterController::class, 'show']);
         });
     });
 });

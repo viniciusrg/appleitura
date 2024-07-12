@@ -1,34 +1,24 @@
 <?php
 
-namespace App\Http\Actions\Cahpter;
+namespace App\Http\Actions\Chapter;
 
-use App\Http\Resources\BookResource;
 use App\Models\Book;
-use Illuminate\Support\Facades\DB;
+use App\Models\Chapter;
 use Illuminate\Support\Facades\Log;
 
 class StoreChapterAction
 {
     public function execute($request)
     {
-        DB::beginTransaction();
         try {
-            $data = $request->only(['title', 'description', 'author', 'read_time', 'content', 'content_audio', 'categories_id']);
+            $data = $request->only(['book_id', 'subtitle', 'chapter_number', 'content']);
 
-            if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-                $coverPath = $request->file('cover')->store("covers/{$data['title']}", 'public');
-                $data['cover'] = $coverPath;
-            }
-            
-            $book = Book::create($data);
-            $book->categories()->attach($data['categories_id']);
+            Book::findOrFail($data['book_id']);
+            $chapter = Chapter::create($data);
 
-            DB::commit();
-
-            return new BookResource($book);
+            return ($chapter);
         } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error('Store book error: ' . $e->getMessage(), ['exception' => $e]);
+            Log::error('Store chapter error: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
