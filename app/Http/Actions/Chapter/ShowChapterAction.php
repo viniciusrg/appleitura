@@ -12,8 +12,9 @@ class ShowChapterAction
     {
         try {
 
-            Book::findOrFail($book_id);
-            $chapter = Chapter::findOrFail($chapter_number);
+            $chapter = Chapter::where('book_id', $book_id)
+            ->where('chapter_number', $chapter_number)
+            ->firstOrFail();
 
             return ($chapter);
         } catch (\Exception $e) {
