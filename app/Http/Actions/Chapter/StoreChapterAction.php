@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Actions\Book;
+namespace App\Http\Actions\Cahpter;
 
 use App\Http\Resources\BookResource;
 use App\Models\Book;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-class StoreBookAction
+class StoreChapterAction
 {
     public function execute($request)
     {

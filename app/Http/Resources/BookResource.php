@@ -22,12 +22,12 @@ class BookResource extends JsonResource
             'author' => $this->author,
             'read_time' => $this->read_time,
             'cover' => $this->cover,
-            'content' => $this->content,
             'content_audio' => $this->content_audio,
             'total_views' => $this->total_views,
             'week_views' => $this->week_views,
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d'),
             'is_favorite' => $request->user()->favorites()->where('book_id', $this->id)->get()->isNotEmpty(),
+            'categories' => $this->categories()->pluck('name'),
         ];
     }
 }

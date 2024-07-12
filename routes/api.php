@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\KeepReadingController;
 use App\Http\Controllers\QuestionsController;
@@ -53,6 +54,9 @@ Route::middleware('auth:sanctum')->group(function () {
             // Admin book routes
             Route::post('/book', [BookController::class, 'store']);
             Route::patch('/book', [BookController::class, 'update']);
+
+            // Chapters routes
+            Route::post('/book/chapters', [ChapterController::class, 'store']);
         });
     });
 });
