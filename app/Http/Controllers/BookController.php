@@ -7,8 +7,10 @@ use App\Http\Actions\Book\ShowBookAction;
 use App\Http\Actions\Book\StoreBookAction;
 use App\Http\Actions\Book\ExclusiveBooksIndexAction;
 use App\Http\Actions\Book\RandomIndexAction;
+use App\Http\Actions\Book\SearchBookAction;
 use App\Http\Actions\Book\TopWeekBooksAction;
 use App\Http\Actions\Book\UpdateBookAction;
+use App\Http\Requests\SearchBooksRequest;
 use App\Http\Requests\StoreBookRequest;
 use Illuminate\Http\Request;
 
@@ -54,5 +56,11 @@ class BookController extends Controller
     {
         $book = new RandomIndexAction();
         return $book->execute($request);
+    }
+
+    public function search(SearchBooksRequest $request)
+    {
+        $search = new SearchBookAction();
+        return $search->execute($request);
     }
 }

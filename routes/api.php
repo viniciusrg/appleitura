@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/exclusiveBooks', [BookController::class, 'exclusiveBooksIndex']);
         Route::get('/topWeekBooks', [BookController::class, 'topWeekBooksIndex']);
         Route::get('/books/random', [BookController::class, 'randomIndex']);
+        Route::get('/books/search', [BookController::class, 'search']);
 
         // Chapter routes
         Route::get('/book/chapters/{book_id}/{chapter_number}', [ChapterController::class, 'show']);
