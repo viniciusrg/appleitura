@@ -13,13 +13,18 @@ class StoreBookAction
     {
         DB::beginTransaction();
         try {
-            $data = $request->only(['title', 'description', 'author', 'read_time', 'content', 'content_audio', 'categories_id']);
+            $data = $request->only(['title', 'description', 'author', 'read_time', 'content', 'categories_id']);
 
             if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
                 $coverPath = $request->file('cover')->store("covers/{$data['title']}", 'public');
                 $data['cover'] = $coverPath;
             }
-            
+
+            if ($request->hasFile('content_audio') && $request->file('content_audio')->isValid()){
+                $audioPath = $request->file('content_audio')->store("audios/{$data['title']}", 'public');
+                $data['content_audio'] = $audioPath;
+            }
+
             $book = Book::create($data);
             $book->categories()->attach($data['categories_id']);
 

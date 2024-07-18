@@ -21,8 +21,6 @@ class UpdateBookAction
             }
 
             if ($request->hasFile('cover') && $request->file('cover')->isValid()) {
-
-                // Deletar a cover antiga
                 if ($book->cover) {
                     Storage::disk('public')->delete($book->cover);
                 }
@@ -31,13 +29,22 @@ class UpdateBookAction
                 $data['cover'] = $coverPath;
             }
 
+            if ($request->hasFile('content_audio') && $request->file('content_audio')->isValid()) {
+                if ($book->content_audio) {
+                    Storage::disk('public')->delete($book->content_audio);
+                }
+
+                $audioPath = $request->file('content_audio')->store("audios/{$data['title']}", 'public');
+                $data['content_audio'] = $audioPath;
+            }
+
             $book->update($data);
             $book->save();
             $book->categories()->sync($data['categories_id']);
 
             return new BookResource($book);
         } catch (\Exception $e) {
-            Log::error(['Update book error: '] . $e);
+            Log::error(['Update book error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
