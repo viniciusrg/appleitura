@@ -5,6 +5,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\KeepReadingController;
+use App\Http\Controllers\PopupController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +47,9 @@ Route::middleware('auth:sanctum')->group(function () {
         // Keep reading
         Route::post('/keepReading/{book_id}', [KeepReadingController::class, 'store']);
         Route::get('/keepReading', [KeepReadingController::class, 'index']);
+
+        // Popup route
+        Route::get('/popup', [PopupController::class, 'index']);
     });
 
     // Admin routes
@@ -61,6 +65,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
             // Chapters routes
             Route::post('/book/chapters', [ChapterController::class, 'store']);
+
+            // Popup route
+            Route::post('/popup', [PopupController::class, 'store']);
         });
     });
 });
