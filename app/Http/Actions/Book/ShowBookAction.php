@@ -2,7 +2,7 @@
 
 namespace App\Http\Actions\Book;
 
-use App\Http\Resources\BookResource;
+use App\Http\Resources\ShowBookResource;
 use App\Models\Book;
 use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +27,7 @@ class ShowBookAction
             // Gerenciando o week_views do livro.
             $book->update(['week_views' => $book->week_views + 1]);
 
-            return new BookResource($book);
+            return new ShowBookResource($book);
         } catch (\Exception $e) {
             Log::error(['Show book error: '] . $e);
             return response()->json(['message' => $e->getMessage()], 500);
