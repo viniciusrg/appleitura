@@ -12,6 +12,10 @@ class IndexPopupAction
     {
         try {
             $popup = PopUp::latest()->first();
+            
+            if (!$popup){
+                return ;
+            }
 
             return new PopupResource($popup);
         } catch (\Exception $e) {
