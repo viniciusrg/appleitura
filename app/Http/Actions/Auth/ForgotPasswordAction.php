@@ -32,7 +32,7 @@ class ForgotPasswordAction
             ]);
 
             try{
-                $send = Mail::to('viniciusrg10@msn.com', 'Vinicius')->send(
+                $send = Mail::to($request->email, $request->email)->send(
                     new ForgotPasswordToken([
                         'email' => $request->email,
                         'token' => $newToken
