@@ -2,6 +2,7 @@
 
 namespace App\Http\Actions\Auth;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -19,8 +20,13 @@ class LoginAction
 
             $user = $request->user();
             $token = $user->createToken('authToken')->plainTextToken;
+            $expiresAt = Carbon::now()->addMinutes(config('sanctum.expiration'))->toDateTimeString();
 
-            return response()->json(['message' => 'User logged in.', 'token' => $token], 200);
+            return response()->json([
+                'message' => 'User logged in.',
+                'token' => $token,
+                'expires_at' => $expiresAt
+            ], 200);
         } catch (ValidationException $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         } catch (\Exception $e) {
