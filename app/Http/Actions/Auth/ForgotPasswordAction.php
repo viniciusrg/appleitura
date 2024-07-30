@@ -4,6 +4,7 @@ namespace App\Http\Actions\Auth;
 
 use App\Mail\ForgotPasswordToken;
 use App\Models\PasswordResetToken;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -13,6 +14,7 @@ class ForgotPasswordAction
     public function execute($request)
     {
         try {
+            $user = User::where('email', $request->input('email'))->firstOrFail();
 
             $newToken = str_pad(random_int(1, 999999), 6, '0', STR_PAD_LEFT);
 

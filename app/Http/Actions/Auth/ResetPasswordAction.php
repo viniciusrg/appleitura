@@ -39,8 +39,13 @@ class ResetPasswordAction
                 ->delete();
 
             $token = $user->createToken('authToken')->plainTextToken;
+            $expiresAt = Carbon::now()->addMinutes(config('sanctum.expiration'))->toDateTimeString();
 
-            return response()->json(['message' => 'User reset password successfully', 'token' => $token], 201);
+            return response()->json([
+                'message' => 'User reset password successfully',
+                'token' => $token,
+                'expires_at' => $expiresAt
+            ], 201);
         } catch (\Exception $e) {
             Log::error(['User reset password error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
