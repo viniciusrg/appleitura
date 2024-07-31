@@ -8,6 +8,7 @@ use App\Http\Controllers\KeepReadingController;
 use App\Http\Controllers\PopupController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WebhookController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -15,6 +16,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::patch('/reset-password', [AuthController::class, 'resetPassword']);
+
+// Webhook
+Route::post('/webhook', [WebhookController::class, 'handle']);
 
 // Autheticated routes
 Route::middleware('auth:sanctum')->group(function () {
