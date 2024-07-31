@@ -20,14 +20,14 @@ class WebhookHandleAction
             $eventType = $request->webhook_event_type;
             switch ($eventType) {
                 case 'order_approved':
-                    $isEmpty = $user->categories()->get()->isEmpty();
+                    $isEmpty = $user->categories()->where('category_id', $category->id)->get()->isEmpty();
                     if (!$isEmpty) {
                         break;
                     }
                     $user->categories()->attach($category->id);
                     break;
                 case 'subscription_renewed':
-                    $isEmpty = $user->categories()->get()->isEmpty();
+                    $isEmpty = $user->categories()->where('category_id', $category->id)->get()->isEmpty();
                     if (!$isEmpty) {
                         break;
                     }
