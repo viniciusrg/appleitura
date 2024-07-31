@@ -23,11 +23,11 @@ class ResetPasswordAction
             $resetToken = PasswordResetToken::where('email', $request->email)->first();
 
             if ($resetToken->token != $request->token) {
-                return response()->json(['message' => 'Invalid token.'], 401);
+                return response()->json(['message' => 'Invalid token.'], 404);
             }
 
             if (Carbon::now()->diffInMinutes($resetToken->created_at) > 15) {
-                return response()->json(['message' => 'Token has expired.'], 401);
+                return response()->json(['message' => 'Token has expired.'], 404);
             }
 
             $user->update([
