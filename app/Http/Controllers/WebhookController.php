@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Actions\Webhook\WebhookHandleAction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class WebhookController extends Controller
 {
     public function handle(Request $request)
     {
-        Log::info('Webhook received:', $request->all());
-        // dd($request->all());
+        $webhook = new WebhookHandleAction();
+        return $webhook->execute($request);
     }
 }
