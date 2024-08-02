@@ -11,9 +11,6 @@ class WebhookHandleAction
     public function execute($request)
     {
         try {
-            // Log::info('Webhook received:', $request->all());
-            // dd($request->all());
-
             $category = Category::where('name', $request->Product['product_name'])->firstOrFail();
             $user = User::where('email', $request->Customer['email'])->firstOrFail();
 
@@ -35,16 +32,16 @@ class WebhookHandleAction
                     break;
                 case 'subscription_late':
                     $user->categories()->detach($category->id);
+                    $user->tokens()->delete();
                     break;
                 case 'subscription_canceled':
                     $user->categories()->detach($category->id);
+                    $user->tokens()->delete();
                     break;
 
                 default:
                     return response()->json(['message:' => 'Category not found.'], 404);
             }
-
-            // dd($request->Custumer);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['message:' => 'Category or customer email not found.'], 404);
         } catch (\Exception $e) {
