@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Permission::class);
     }
+
+    public function pushNotification()
+    {
+        return $this->hasMany(pushNotification::class);
+    }
 }

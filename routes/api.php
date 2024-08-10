@@ -6,6 +6,7 @@ use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\KeepReadingController;
 use App\Http\Controllers\PopupController;
+use App\Http\Controllers\PushNotificationController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WebhookController;
@@ -56,6 +57,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Popup route
         Route::get('/popup', [PopupController::class, 'index']);
+
+        // Push notification routes
+        Route::post('/pushNotification', [PushNotificationController::class, 'store']);
+        Route::get('/sendNotification', [PushNotificationController::class, 'send']);
     });
 
     // Admin routes
