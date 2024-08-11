@@ -61,6 +61,7 @@ Route::middleware('auth:sanctum')->group(function () {
         // Push notification routes
         Route::post('/pushNotification', [PushNotificationController::class, 'store']);
         Route::get('/sendNotification', [PushNotificationController::class, 'send']);
+        Route::get('/pushNotification', [PushNotificationController::class, 'show']);
     });
 
     // Admin routes
