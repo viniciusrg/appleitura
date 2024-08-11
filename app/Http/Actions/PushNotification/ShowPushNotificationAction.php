@@ -11,7 +11,7 @@ class ShowPushNotificationAction
         try {
             return $request->user()->pushNotification()->pluck('token');
         } catch (\Exception $e) {
-            Log::error(['Index push notification error: ' . $e]);
+            Log::error(['Show push notification error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

@@ -70,6 +70,6 @@ class User extends Authenticatable
 
     public function pushNotification()
     {
-        return $this->hasMany(pushNotification::class);
+        return $this->hasMany(PushNotification::class);
     }
 }
