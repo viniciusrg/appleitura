@@ -2,6 +2,7 @@
 
 namespace App\Http\Actions\PushNotification;
 
+use App\Models\NotificationMessage;
 use App\Models\PushNotification;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Log;
@@ -12,6 +13,7 @@ class PushNotificationSendAction
     {
         try {
             $tokens = PushNotification::inRandomOrder()->take(599)->pluck('token')->toArray();
+            $notificationData = NotificationMessage::inRandomOrder()->select('message', 'title')->first();
 
             // Instancia o cliente HTTP
             $client = new Client();
@@ -25,10 +27,9 @@ class PushNotificationSendAction
                     ],
                     'json' => [
                         'to' => $token,
-                        'sound' => 'default', // Som de notificação (opcional)
-                        'title' => 'Teste Title',
-                        'body' => 'Teste message',
-                        'data' => ['someData' => 'goes here'], // Dados extras opcionais
+                        'sound' => 'default',
+                        'title' => $notificationData->title,
+                        'body' => $notificationData->message,
                     ],
                 ]);
 

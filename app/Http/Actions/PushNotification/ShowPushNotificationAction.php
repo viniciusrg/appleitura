@@ -9,7 +9,7 @@ class ShowPushNotificationAction
     public function execute($request)
     {
         try {
-            return $request->user()->pushNotification()->get()->pluck('token');
+            return $request->user()->pushNotification()->pluck('token');
         } catch (\Exception $e) {
             Log::error(['Index push notification error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
