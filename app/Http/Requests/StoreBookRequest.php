@@ -27,7 +27,7 @@ class StoreBookRequest extends FormRequest
             'description' => 'required|string|max:1000',
             'author' => 'required|string|max:255',
             'read_time' => 'required|string|max:255',
-            'content_audio' => 'nullable|file|mimes:mp3,wav,m4a|max:256000',
+            'content_audio' => 'nullable|file|mimes:mp3,wav,m4a|max:524.288',
             'cover' => 'nullable|file|image|max:5120',
             'categories_id' => 'nullable',
         ];
