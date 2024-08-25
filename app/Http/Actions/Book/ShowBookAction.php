@@ -4,6 +4,7 @@ namespace App\Http\Actions\Book;
 
 use App\Http\Resources\ShowBookResource;
 use App\Models\Book;
+use App\Services\UserAdminServices;
 use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
 
@@ -14,8 +15,13 @@ class ShowBookAction
         try {
             // $book = Book::find($book_id);
             $user = $request->user();
-            $categoryIds = UserCategoryServices::getCategoryIds($user);
-            $book = Book::InCategories($categoryIds)->find($book_id);
+
+            if (UserAdminServices::isAdmin($user) === 'admin') {
+                $book = Book::find($book_id);
+            } else {
+                $categoryIds = UserCategoryServices::getCategoryIds($user);
+                $book = Book::InCategories($categoryIds)->find($book_id);
+            }
 
             if (!$book) {
                 return response()->json(['message' => 'Book not found'], 404);

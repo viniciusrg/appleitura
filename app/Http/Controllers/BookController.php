@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Actions\Book\DeleteBookAction;
 use App\Http\Actions\Book\IndexBookAction;
 use App\Http\Actions\Book\ShowBookAction;
 use App\Http\Actions\Book\StoreBookAction;
@@ -25,6 +26,12 @@ class BookController extends Controller
     public function update(StoreBookRequest $request)
     {
         $book = new UpdateBookAction();
+        return $book->execute($request);
+    }
+
+    public function delete(Request $request)
+    {
+        $book = new DeleteBookAction();
         return $book->execute($request);
     }
 

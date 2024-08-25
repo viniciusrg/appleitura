@@ -68,12 +68,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('/admin')->group(function () {
 
         Route::middleware('admin')->group(function () {
-            // Show user
+            // Show answer
             Route::get('/answer', [QuestionsController::class, 'index']);
 
             // Admin book routes
             Route::post('/book', [BookController::class, 'store']);
             Route::patch('/book', [BookController::class, 'update']);
+            Route::delete('/book', [BookController::class, 'delete']);
 
             // Chapters routes
             Route::post('/book/chapters', [ChapterController::class, 'store']);

@@ -4,6 +4,7 @@ namespace App\Http\Actions\Book;
 
 use App\Http\Resources\BookResource;
 use App\Models\Book;
+use App\Services\UserAdminServices;
 use App\Services\UserCategoryServices;
 use Illuminate\Support\Facades\Log;
 
@@ -13,8 +14,13 @@ class IndexBookAction
     {
         try {
             $user = $request->user();
-            $categoryIds = UserCategoryServices::getCategoryIds($user);
-            $books = Book::InCategories($categoryIds)->orderBy('id', 'desc')->paginate(8);
+
+            if (UserAdminServices::isAdmin($user) === 'admin') {
+                $books = Book::orderBy('id', 'desc')->paginate(8);
+            } else {
+                $categoryIds = UserCategoryServices::getCategoryIds($user);
+                $books = Book::InCategories($categoryIds)->orderBy('id', 'desc')->paginate(8);
+            }
 
             return BookResource::collection($books);
         } catch (\Exception $e) {

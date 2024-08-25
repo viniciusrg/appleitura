@@ -5,18 +5,22 @@ namespace App\Http\Actions\Chapter;
 use App\Models\Book;
 use App\Models\Chapter;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
 class StoreChapterAction
 {
     public function execute($request)
     {
         try {
-            $data = $request->only(['book_id', 'subtitle', 'chapter_number', 'content']);
+            $data = $request->all();
 
-            Book::findOrFail($data['book_id']);
-            $chapter = Chapter::create($data);
+            Book::findOrFail($data[0]['book_id']);
 
-            return ($chapter);
+            foreach ($data as $dataItem) {
+                Chapter::create($dataItem);
+            }
+
+            return Response('', Response::HTTP_OK);
         } catch (\Exception $e) {
             Log::error('Store chapter error: ' . $e->getMessage(), ['exception' => $e]);
             return response()->json(['message' => $e->getMessage()], 500);

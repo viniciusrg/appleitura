@@ -23,9 +23,10 @@ class StoreUpdateChapterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subtitle' => 'required|string|max:255',
-            'content' => 'required|string',
-            'chapter_number' => 'required|integer|unique:chapters,chapter_number,NULL,id,book_id,' . $this->book_id,
+            '*.book_id' => 'required|int|max:1000',
+            '*.subtitle' => 'required|string|max:255',
+            '*.content' => 'required|string',
+            '*.chapter_number' => 'required|integer|unique:chapters,chapter_number,NULL,id,book_id,' . $this->book_id,
         ];
     }
 }
