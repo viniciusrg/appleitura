@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\KeepReadingController;
@@ -70,6 +71,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::middleware('admin')->group(function () {
             // Show answer
             Route::get('/answer', [QuestionsController::class, 'index']);
+
+            // Category router
+            Route::get('/getCategories', [CategoryController::class, 'index']);
 
             // Admin book routes
             Route::post('/book', [BookController::class, 'store']);

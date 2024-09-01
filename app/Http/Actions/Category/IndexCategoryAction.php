@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Http\Actions\Favorite;
+namespace App\Http\Actions\Category;
 
-use App\Http\Resources\BookResource;
+use App\Models\Category;
 use Illuminate\Support\Facades\Log;
 
-class IndexFavoriteAction
+class IndexCategoryAction
 {
     public function execute($request)
     {
         try {
-            $user = $request->user();
-            $favorites = $user->favorites()->paginate(8);
-
-            return BookResource::collection($favorites);
+            $categories = Category::all();
+            return $categories;
+            
         } catch (\Exception $e) {
             Log::error(['Index favorites error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);

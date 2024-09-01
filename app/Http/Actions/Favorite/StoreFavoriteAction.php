@@ -20,7 +20,7 @@ class StoreFavoriteAction
 
             return response()->json(['message' => 'Successfully favorited.'], 200);
         } catch (\Exception $e) {
-            Log::error(['Store favorite error: '] . $e);
+            Log::error(['Store favorite error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
