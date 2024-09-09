@@ -12,7 +12,13 @@ class CategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = ['Empreendedorismo', 'Desenvolvimento pessoal', 'Romance', 'TDAH', 'Criptomoedas'];
+        $categories = [
+            'Vida Positiva',
+            'Futuro Financeiro',
+            'Cuidar & Crescer',
+            'Conexão Íntima',
+            'Evolução Diária'
+        ];
 
         foreach ($categories as $category) {
             Category::create(['name' => $category]);

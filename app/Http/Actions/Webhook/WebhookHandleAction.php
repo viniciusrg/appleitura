@@ -11,7 +11,6 @@ class WebhookHandleAction
     public function execute($request)
     {
         try {
-            Log::info('Webhook recebido:', ['payload' => $request->all()]);
             $category = Category::where('name', $request->Product['product_name'])->firstOrFail();
             $user = User::where('email', $request->Customer['email'])->firstOrFail();
 
