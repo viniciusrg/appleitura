@@ -16,7 +16,6 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         $isCategory = $this->categories()->get();
-        // dd($isCategory->pluck('name'));
         return [
             'id' => $this->id,
             'email' => $this->email,
