@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Actions\User\DeleteAccountAction;
+use App\Http\Actions\User\DeleteUserAccountAction;
 use App\Http\Actions\User\GetUserAction;
 use App\Http\Actions\User\UpdateAccountAction;
 use Illuminate\Http\Request;
@@ -24,5 +25,11 @@ class UserController extends Controller
     {
         $data = new DeleteAccountAction();
         return $data->execute($request);
+    }
+
+    public function deleteUserAccount (Request $request){
+        $user = new DeleteUserAccountAction ();
+        return $user->execute($request);
+        
     }
 }
