@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->string('description', 1000);
             $table->string('author');
             $table->string('read_time');
             $table->integer('total_views')->default(0);
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('content_audio')->nullable();
             $table->timestamps();
         });
+        ``
     }
 
     /**
