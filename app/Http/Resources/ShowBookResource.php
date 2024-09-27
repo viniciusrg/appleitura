@@ -2,19 +2,19 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Chapter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ShowBookResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
+
+        $chapters = Chapter::where('book_id', $this->id)
+        ->get(['id', 'subtitle', 'content', 'chapter_number']);
+
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -29,6 +29,7 @@ class ShowBookResource extends JsonResource
             'is_favorite' => $request->user()->favorites()->where('book_id', $this->id)->get()->isNotEmpty(),
             'categories' => $this->categories()->pluck('name'),
             'total_chapter' => $this->chapters->count(),
+            'chapters:' => $chapters,
         ];
     }
 }
