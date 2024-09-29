@@ -20,7 +20,6 @@ class ShowBookAction
             } else {
                 $categoryIds = UserCategoryServices::getCategoryIds($user);
                 $book = Book::InCategories($categoryIds)->find($book_id);
-                $book->chapters = "teste";
             }
 
             if (!$book) {

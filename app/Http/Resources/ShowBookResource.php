@@ -11,7 +11,6 @@ class ShowBookResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-
         $chapters = Chapter::where('book_id', $this->id)
         ->get(['id', 'subtitle', 'content', 'chapter_number']);
 
