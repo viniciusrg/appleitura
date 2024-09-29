@@ -28,7 +28,7 @@ class ShowBookResource extends JsonResource
             'is_favorite' => $request->user()->favorites()->where('book_id', $this->id)->get()->isNotEmpty(),
             'categories' => $this->categories()->pluck('name'),
             'total_chapter' => $this->chapters->count(),
-            'chapters:' => $chapters,
+            'chapters' => $chapters,
         ];
     }
 }
