@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Actions\Auth;
 
 use Carbon\Carbon;

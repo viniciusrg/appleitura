@@ -13,6 +13,7 @@ class CategoriesSeeder extends Seeder
     public function run(): void
     {
         $categories = [
+            'Gratuito',
             'Vida Positiva',
             'Futuro Financeiro',
             'Cuidar & Crescer',

@@ -12,6 +12,8 @@ class RegisterAction
 {
     public function execute($request)
     {
+        
+
         DB::beginTransaction();
         try {
             $user = User::create([
@@ -25,6 +27,8 @@ class RegisterAction
 
             $token = $user->createToken('authToken')->plainTextToken;
             $expiresAt = Carbon::now()->addMinutes(config('sanctum.expiration'))->toDateTimeString();
+
+            $user->categories()->attach(1);
 
             DB::commit();
 
