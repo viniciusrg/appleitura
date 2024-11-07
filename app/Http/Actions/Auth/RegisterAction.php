@@ -28,7 +28,7 @@ class RegisterAction
             $token = $user->createToken('authToken')->plainTextToken;
             $expiresAt = Carbon::now()->addMinutes(config('sanctum.expiration'))->toDateTimeString();
 
-            $user->categories()->attach(1);
+            $user->categories()->attach(6);
 
             DB::commit();
 

@@ -13,12 +13,12 @@ class CategoriesSeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Gratuito',
             'Vida Positiva',
             'Futuro Financeiro',
             'Cuidar & Crescer',
             'Conexão Íntima',
-            'Evolução Diária'
+            'Evolução Diária',
+            'Gratuito'
         ];
 
         foreach ($categories as $category) {
