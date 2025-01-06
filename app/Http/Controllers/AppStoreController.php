@@ -6,6 +6,7 @@ use App\Services\JwtService;
 use GuzzleHttp\Client;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AppStoreController extends Controller
 {
@@ -33,7 +34,7 @@ class AppStoreController extends Controller
     public function handleStoreNotification(Request $request)
 {
     $notificationData = $request->getContent();
-    dd($notificationData);
+    Log::error(['StoreNotification: ', $notificationData]);
 
     // Obtenha a chave pública da Apple
     $client = new Client();
