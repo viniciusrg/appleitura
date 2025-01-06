@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppStoreController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
@@ -19,6 +20,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::patch('/reset-password', [AuthController::class, 'resetPassword']);
 Route::delete('deleteUserAccount', [ UserController::class, 'deleteUserAccount']);
+Route::get('/appstore/jwt', [AppStoreController::class, 'getJwt']);
+Route::post('/appstore/handleStoreNotification', [AppStoreController::class, 'handleStoreNotification']);
 
 // Webhook
 Route::post('/webhook', [WebhookController::class, 'handle']);
