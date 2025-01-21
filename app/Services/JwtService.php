@@ -27,8 +27,6 @@ class JwtService
     public function generateJwt(): string
     {
         $client = new AppleClient();
-        $client = new AppleClient();
-        // $client->setApiKey('/Users/viniciusgoulart/Documents/Jobs/Luiz/appleitura/storage/app/keys/AuthKey_G5AFUS4VS9.p8');
         $client->setApiKey($this->privateKey);
         $client->setIssuerId($this->issuerId);
         $client->setKeyIdentifier($this->keyId);

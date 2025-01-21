@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Services\JwtService;
-use AppleClient;
-use AppleService_AppStore;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -21,28 +21,22 @@ class AppStoreController extends Controller
     {
         $token = $this->jwtService->generateJwt();
         return $token;
-
-        $client = new AppleClient();
-        $client->setApiKey('/Users/viniciusgoulart/Documents/Jobs/Luiz/appleitura/storage/app/keys/SubscriptionKey_859ZN8XCR8.p8');
-        $client->setIssuerId(config('appstore.issuer_id'));
-        $client->setKeyIdentifier(config('appstore.key_id'));
-        
-        $appstore = new AppleService_AppStore($client);
-        dd($appstore->apps->listApps());
-        $ret = $appstore->apps->listApps([
-          'limit' => 10
-        ]);
-
-        // return response()->json(['Response: ', $ret], 200);
-        return $ret;
     }
 
-    public function handleNotification (Request $request){
-// Captura a notificação enviada pela Apple
+    public function handleNotification(Request $request)
+    {
+
         $data = $request->all();
 
-        // Você pode verificar a assinatura da notificação para garantir segurança
-        // e depois processar os dados conforme necessário.
+        $header = $request->headers;
+        // $kid = $header->kid ?? null;
+
+        // dd($header);
+        // dd($data['signedPayload']);
+        $result = self::decodToken($data['signedPayload']);
+        // dd($result);
+
+        Log::info('Headers', $header);
         Log::info('Recebido Apple Notification', $data);
 
         // Processar a notificação conforme o tipo
@@ -60,13 +54,20 @@ class AppStoreController extends Controller
                 $this->processCancellation($payload);
                 break;
 
-            // Adicione outros tipos de notificações aqui
+                // Adicione outros tipos de notificações aqui
             default:
-                Log::warning('Tipo de notificação desconhecido', $data);
+                // Log::warning('Tipo de notificação desconhecido', $data);
         }
 
         // Sempre retorne 200 OK
         return response()->json(['status' => 'success'], 200);
+    }
+
+    private function decodToken($response)
+    {
+        $decoded = JWT::decode($response, new key('G5AFUS4VS9', 'HS256'));
+        $decodedArray = (array) $decoded;
+        return $decodedArray;
     }
 
     private function processRenewal($payload)
@@ -78,5 +79,4 @@ class AppStoreController extends Controller
     {
         // Lógica para tratar o cancelamento
     }
-    
 }
