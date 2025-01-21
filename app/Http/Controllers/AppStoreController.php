@@ -6,6 +6,7 @@ use App\Services\JwtService;
 use AppleClient;
 use AppleService_AppStore;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AppStoreController extends Controller
 {
@@ -61,7 +62,7 @@ class AppStoreController extends Controller
 
             // Adicione outros tipos de notificações aqui
             default:
-                \Log::warning('Tipo de notificação desconhecido', $data);
+                Log::warning('Tipo de notificação desconhecido', $data);
         }
 
         // Sempre retorne 200 OK
