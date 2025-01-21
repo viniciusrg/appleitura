@@ -21,7 +21,7 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::patch('/reset-password', [AuthController::class, 'resetPassword']);
 Route::delete('deleteUserAccount', [ UserController::class, 'deleteUserAccount']);
 Route::get('/appstore/jwt', [AppStoreController::class, 'getJwt']);
-Route::post('/appstore/handleStoreNotification', [AppStoreController::class, 'handleStoreNotification']);
+Route::post('/apple/notifications', [AppStoreController::class, 'handleNotification']);
 
 // Webhook
 Route::post('/webhook', [WebhookController::class, 'handle']);

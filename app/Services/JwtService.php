@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use AppleClient;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\Log;
 
 class JwtService
 {
@@ -14,7 +16,7 @@ class JwtService
     {
         $this->keyId = config('appstore.key_id'); // ID da chave
         $this->issuerId = config('appstore.issuer_id'); // ID do time
-        $this->privateKey = file_get_contents(storage_path('app/keys/SubscriptionKey_' . $this->keyId . '.p8'));
+        $this->privateKey = file_get_contents(storage_path('app/keys/AuthKey_' . $this->keyId . '.p8'));
     }
 
     /**
@@ -24,14 +26,14 @@ class JwtService
      */
     public function generateJwt(): string
     {
-        $claims = [
-            'iss' => $this->issuerId,           // Issuer ID
-            'iat' => time(),                    // Emitido em
-            'exp' => time() + 3600,             // Expira em 1 hora
-            'aud' => 'appstoreconnect-v1',      // Audiência
-        ];
+        $client = new AppleClient();
+        $client = new AppleClient();
+        $client->setApiKey('/Users/viniciusgoulart/Documents/Jobs/Luiz/appleitura/storage/app/keys/AuthKey_G5AFUS4VS9.p8');
+        $client->setIssuerId($this->issuerId);
+        $client->setKeyIdentifier($this->keyId);
 
-        return JWT::encode($claims, $this->privateKey, 'ES256', $this->keyId);
+        $token = $client->generateToken();
+
+        return $token;
     }
 }
-

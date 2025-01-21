@@ -3,10 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Services\JwtService;
-use GuzzleHttp\Client;
-use Firebase\JWT\JWT;
+use AppleClient;
+use AppleService_AppStore;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class AppStoreController extends Controller
 {
@@ -17,42 +16,66 @@ class AppStoreController extends Controller
         $this->jwtService = $jwtService;
     }
 
-    /**
-     * Retorna um JWT gerado para a App Store Server API.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function getJwt()
     {
-        $jwt = $this->jwtService->generateJwt();
+        $token = $this->jwtService->generateJwt();
+        return $token;
 
-        return response()->json([
-            'token' => $jwt,
+        $client = new AppleClient();
+        $client->setApiKey('/Users/viniciusgoulart/Documents/Jobs/Luiz/appleitura/storage/app/keys/SubscriptionKey_859ZN8XCR8.p8');
+        $client->setIssuerId(config('appstore.issuer_id'));
+        $client->setKeyIdentifier(config('appstore.key_id'));
+        
+        $appstore = new AppleService_AppStore($client);
+        dd($appstore->apps->listApps());
+        $ret = $appstore->apps->listApps([
+          'limit' => 10
         ]);
+
+        // return response()->json(['Response: ', $ret], 200);
+        return $ret;
     }
 
-    public function handleStoreNotification(Request $request)
-{
-    $notificationData = $request->getContent();
-    Log::error(['StoreNotification: ', $notificationData]);
+    public function handleNotification (Request $request){
+// Captura a notificação enviada pela Apple
+$data = $request->all();
 
-    // Obtenha a chave pública da Apple
-    $client = new Client();
-    $response = $client->get('https://appleid.apple.com/auth/keys');
-    $publicKey = json_decode($response->getBody()->getContents(), true)['keys'][0]['n'];
+// Você pode verificar a assinatura da notificação para garantir segurança
+// e depois processar os dados conforme necessário.
+\Log::info('Recebido Apple Notification', $data);
 
-    // Converta a chave pública para o formato correto, se necessário (exemplo, em base64)
+// Processar a notificação conforme o tipo
+$notificationType = $data['notificationType'] ?? null;
+$payload = $data['data'] ?? [];
 
-    // Valide o JWT (se necessário)
-    $decoded = JWT::decode($notificationData, $publicKey, ['RS256']);
+switch ($notificationType) {
+    case 'DID_RENEW':
+        // Renovação de assinatura
+        $this->processRenewal($payload);
+        break;
 
-    // Processar os dados da notificação
-    $transactionId = $decoded->data->signedTransactionInfo->transactionId;
-    $originalTransactionId = $decoded->data->signedTransactionInfo->originalTransactionId;
-    $status = $decoded->data->signedTransactionInfo->status;
+    case 'CANCEL':
+        // Cancelamento de assinatura
+        $this->processCancellation($payload);
+        break;
 
-    // Lógica para lidar com a notificação
-    // Exemplo: atualizar o status da assinatura no banco de dados
+    // Adicione outros tipos de notificações aqui
+    default:
+        \Log::warning('Tipo de notificação desconhecido', $data);
 }
 
+// Sempre retorne 200 OK
+return response()->json(['status' => 'success'], 200);
+}
+
+private function processRenewal($payload)
+{
+// Lógica para tratar a renovação
+}
+
+private function processCancellation($payload)
+{
+// Lógica para tratar o cancelamento
+}
+    }
 }
