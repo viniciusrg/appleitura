@@ -16,7 +16,7 @@ class JwtService
     {
         $this->keyId = config('appstore.key_id'); // ID da chave
         $this->issuerId = config('appstore.issuer_id'); // ID do time
-        $this->privateKey = file_get_contents(storage_path('app/keys/AuthKey_' . $this->keyId . '.p8'));
+        $this->privateKey = storage_path('app/keys/AuthKey_' . $this->keyId . '.p8');
     }
 
     /**
@@ -28,7 +28,8 @@ class JwtService
     {
         $client = new AppleClient();
         $client = new AppleClient();
-        $client->setApiKey('/Users/viniciusgoulart/Documents/Jobs/Luiz/appleitura/storage/app/keys/AuthKey_G5AFUS4VS9.p8');
+        // $client->setApiKey('/Users/viniciusgoulart/Documents/Jobs/Luiz/appleitura/storage/app/keys/AuthKey_G5AFUS4VS9.p8');
+        $client->setApiKey($this->privateKey);
         $client->setIssuerId($this->issuerId);
         $client->setKeyIdentifier($this->keyId);
 
