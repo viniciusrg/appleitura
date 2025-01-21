@@ -43,7 +43,7 @@ class AppStoreController extends Controller
 
         // Você pode verificar a assinatura da notificação para garantir segurança
         // e depois processar os dados conforme necessário.
-        \Log::info('Recebido Apple Notification', $data);
+        Log::info('Recebido Apple Notification', $data);
 
         // Processar a notificação conforme o tipo
         $notificationType = $data['notificationType'] ?? null;
