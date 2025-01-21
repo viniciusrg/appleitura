@@ -38,44 +38,44 @@ class AppStoreController extends Controller
 
     public function handleNotification (Request $request){
 // Captura a notificação enviada pela Apple
-$data = $request->all();
+        $data = $request->all();
 
-// Você pode verificar a assinatura da notificação para garantir segurança
-// e depois processar os dados conforme necessário.
-\Log::info('Recebido Apple Notification', $data);
+        // Você pode verificar a assinatura da notificação para garantir segurança
+        // e depois processar os dados conforme necessário.
+        \Log::info('Recebido Apple Notification', $data);
 
-// Processar a notificação conforme o tipo
-$notificationType = $data['notificationType'] ?? null;
-$payload = $data['data'] ?? [];
+        // Processar a notificação conforme o tipo
+        $notificationType = $data['notificationType'] ?? null;
+        $payload = $data['data'] ?? [];
 
-switch ($notificationType) {
-    case 'DID_RENEW':
-        // Renovação de assinatura
-        $this->processRenewal($payload);
-        break;
+        switch ($notificationType) {
+            case 'DID_RENEW':
+                // Renovação de assinatura
+                $this->processRenewal($payload);
+                break;
 
-    case 'CANCEL':
-        // Cancelamento de assinatura
-        $this->processCancellation($payload);
-        break;
+            case 'CANCEL':
+                // Cancelamento de assinatura
+                $this->processCancellation($payload);
+                break;
 
-    // Adicione outros tipos de notificações aqui
-    default:
-        \Log::warning('Tipo de notificação desconhecido', $data);
-}
+            // Adicione outros tipos de notificações aqui
+            default:
+                \Log::warning('Tipo de notificação desconhecido', $data);
+        }
 
-// Sempre retorne 200 OK
-return response()->json(['status' => 'success'], 200);
-}
-
-private function processRenewal($payload)
-{
-// Lógica para tratar a renovação
-}
-
-private function processCancellation($payload)
-{
-// Lógica para tratar o cancelamento
-}
+        // Sempre retorne 200 OK
+        return response()->json(['status' => 'success'], 200);
     }
+
+    private function processRenewal($payload)
+    {
+        // Lógica para tratar a renovação
+    }
+
+    private function processCancellation($payload)
+    {
+        // Lógica para tratar o cancelamento
+    }
+    
 }
