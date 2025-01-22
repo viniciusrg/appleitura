@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(PushNotification::class);
     }
+
+    public function appleTransactions()
+    {
+        return $this->hasMany(AppleTransaction::class, 'user_id');
+    }
 }

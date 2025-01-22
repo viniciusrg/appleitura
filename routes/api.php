@@ -21,6 +21,7 @@ Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::patch('/reset-password', [AuthController::class, 'resetPassword']);
 Route::delete('deleteUserAccount', [ UserController::class, 'deleteUserAccount']);
 Route::get('/appstore/jwt', [AppStoreController::class, 'getJwt']);
+Route::get('/appstore/jwtNotification', [AppStoreController::class, 'getNotificationToken']);
 Route::post('/apple/notifications', [AppStoreController::class, 'handleNotification']);
 
 // Webhook
@@ -67,6 +68,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/pushNotification', [PushNotificationController::class, 'store']);
         Route::get('/sendNotification', [PushNotificationController::class, 'send']);
         Route::get('/pushNotification', [PushNotificationController::class, 'show']);
+
+        Route::post('/transaction', [AppStoreController::class, 'transactionStore']);
     });
 
     // Admin routes

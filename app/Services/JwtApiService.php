@@ -3,10 +3,8 @@
 namespace App\Services;
 
 use AppleClient;
-use Firebase\JWT\JWT;
-use Illuminate\Support\Facades\Log;
 
-class JwtService
+class JwtApiService
 {
     protected string $keyId;
     protected string $issuerId;

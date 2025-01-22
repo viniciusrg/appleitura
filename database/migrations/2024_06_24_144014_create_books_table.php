@@ -24,7 +24,6 @@ return new class extends Migration
             $table->string('content_audio')->nullable();
             $table->timestamps();
         });
-        ``
     }
 
     /**
