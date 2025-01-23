@@ -3,6 +3,7 @@
 namespace App\Http\Actions\Apple;
 
 use App\Models\AppleTransaction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -11,11 +12,13 @@ class StoreAppleTransactionAction
     public function execute($request)
     {
         try {
-            $data = $request->only(['transactionId', 'user_id', 'inAppOwnershipType', 'subscriptionGroupIdentifier', 'type']);
+            $data = $request->only(['transactionId', 'inAppOwnershipType', 'subscriptionGroupIdentifier', 'type']);
             
             if (empty($data)){
                 return "Dados inválidos.";
             }
+
+            $data['user_id'] = Auth::id();
 
             AppleTransaction::create($data);
             return response('', Response::HTTP_OK);
