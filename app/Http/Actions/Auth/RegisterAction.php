@@ -12,8 +12,6 @@ class RegisterAction
 {
     public function execute($request)
     {
-        
-
         DB::beginTransaction();
         try {
             $user = User::create([
@@ -40,7 +38,7 @@ class RegisterAction
             ], 201);
         } catch (\Exception $e) {
             DB::roolBack();
-            Log::error(['User register error: '] . $e);
+            Log::error(['User register error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
