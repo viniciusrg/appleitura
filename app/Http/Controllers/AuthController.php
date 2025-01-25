@@ -11,13 +11,19 @@ use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\ResetPasswordRequest;
 use App\Http\Requests\StoreUpdateUserRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
     public function register(StoreUpdateUserRequest $request)
     {
-        $data = new RegisterAction();
-        return $data->execute($request);
+        try {
+            dump("Entrei no register");
+            $data = new RegisterAction();
+            return $data->execute($request);
+        } catch (\Exception $e) {
+            Log::error(['User register error: ' . $e]);
+        }
     }
 
     public function login(AuthUserRequest $request)
