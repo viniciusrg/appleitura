@@ -15,9 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('transactionId', 250);
             $table->unsignedBigInteger('user_id');
-            $table->string('inAppOwnershipType', 250)->nullable();
-            $table->string('subscriptionGroupIdentifier', 250)->nullable();
-            $table->string('type', 250)->nullable();
+            $table->string('productId', 250)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

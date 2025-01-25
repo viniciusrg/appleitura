@@ -12,9 +12,9 @@ class StoreAppleTransactionAction
     public function execute($request)
     {
         try {
-            $data = $request->only(['transactionId', 'inAppOwnershipType', 'subscriptionGroupIdentifier', 'type']);
-            
-            if (empty($data)){
+            $data = $request->only(['transactionId', 'productId']);
+
+            if (empty($data)) {
                 return "Dados inválidos.";
             }
 

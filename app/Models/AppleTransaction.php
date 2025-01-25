@@ -14,9 +14,7 @@ class AppleTransaction extends Model
     protected $fillable = [
         'transactionId',
         'user_id',
-        'inAppOwnershipType',
-        'subscriptionGroupIdentifier',
-        'type'
+        'productId',
     ];
 
     public function user()
