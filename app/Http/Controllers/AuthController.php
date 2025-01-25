@@ -17,14 +17,14 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        dd('cu');
-        // try {
-        //     dump("Entrei no register");
-        //     $data = new RegisterAction();
-        //     return $data->execute($request);
-        // } catch (\Exception $e) {
-        //     Log::error(['User register error: ' . $e]);
-        // }
+        dump('cu');
+        try {
+            dump("Entrei no register");
+            $data = new RegisterAction();
+            return $data->execute($request);
+        } catch (\Exception $e) {
+            Log::error(['User register error: ' . $e]);
+        }
     }
 
     public function login(AuthUserRequest $request)
