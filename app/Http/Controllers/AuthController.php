@@ -15,16 +15,10 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(StoreUpdateUserRequest $request)
     {
-        dump('cu');
-        try {
-            dump("Entrei no register");
-            $data = new RegisterAction();
-            return $data->execute($request);
-        } catch (\Exception $e) {
-            Log::error(['User register error: ' . $e]);
-        }
+        $data = new RegisterAction();
+        return $data->execute($request);
     }
 
     public function login(AuthUserRequest $request)
