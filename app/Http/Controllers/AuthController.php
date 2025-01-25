@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(StoreUpdateUserRequest $request)
     {
+        dd('cu');
         try {
             dump("Entrei no register");
             $data = new RegisterAction();
