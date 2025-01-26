@@ -52,50 +52,98 @@ class AppStoreController extends Controller
     public function handleNotification(Request $request)
     {
 
-        self::fetchPurchaseHistory('2000000836397208');
-        dd('Fetched');
+        // self::fetchPurchaseHistory('2000000836397208');
+        // dump('Fetched');
 
         $data = $request->all();
         $header = $request->headers;
-        // $kid = $header->kid ?? null;
+        $signedTransactionInfo = [];
+        Log::info('Headers', $header);
+        Log::info('Recebido Apple Notification', $data);
 
         $parts = explode('.', $data['signedPayload']);
 
+        // dd($data);
+
         $header = json_decode(base64_decode($parts[0]), true);
         $payload = json_decode(base64_decode($parts[1]), true);
-        dump($header);
-        dd($payload);
 
-        // dd($header);
-        // dd($data['signedPayload']);
-        $result = self::decodToken($data['signedPayload']);
-        // dd($result);
+        // dump("header: ");
+        // dump($header);
 
-        Log::info('Headers', $header);
-        Log::info('Recebido Apple Notification', $data);
+        // dump("payload: ");
+        // dump($payload);
+
+        if ($payload['data']['signedTransactionInfo']) {
+            $payloadParts = explode('.', $payload['data']['signedTransactionInfo']);
+
+            foreach ($payloadParts as $index => $payloadPart) {
+                if ($index < 2) {
+                    $signedTransactionInfo[] = json_decode(base64_decode($payloadPart, true));
+                }
+            }
+        };
+
+        dump("signedTransactionInfo: ");
+        dump($signedTransactionInfo);
+
+        if ($payload['data']['signedRenewalInfo']) {
+            $payloadParts = explode('.', $payload['data']['signedRenewalInfo']);
+
+            foreach ($payloadParts as $index => $payloadPart) {
+                if ($index < 2) {
+                    $signedRenewalInfo[] = json_decode(base64_decode($payloadPart, true));
+                }
+            }
+        };
+
+        dump("signedRenewalInfo: ");
+        dump($signedRenewalInfo);
+
 
         // Processar a notificação conforme o tipo
         $notificationType = $data['notificationType'] ?? null;
         $payload = $data['data'] ?? [];
 
         switch ($notificationType) {
+            case 'SUBSCRIBED':
+                $this->processSubscribed($signedTransactionInfo, $signedRenewalInfo);
+                break;
+
             case 'DID_RENEW':
-                // Renovação de assinatura
-                $this->processRenewal($payload);
+                $this->processRenewal($signedTransactionInfo, $signedRenewalInfo);
                 break;
 
-            case 'CANCEL':
-                // Cancelamento de assinatura
-                $this->processCancellation($payload);
+            case ('EXPIRED' || 'DID_FAIL_TO_RENEW' || 'REFUND'):
+                $this->processCancel($signedTransactionInfo, $signedRenewalInfo);
                 break;
 
-                // Adicione outros tipos de notificações aqui
             default:
-                // Log::warning('Tipo de notificação desconhecido', $data);
+                Log::warning('Tipo de notificação desconhecido', $data);
         }
 
-        // Sempre retorne 200 OK
         return response()->json(['status' => 'success'], 200);
+    }
+
+    private function processSubscribed(array $signedTransactionInfo, array $signedRenewalInfo)
+    {
+
+    }
+
+    private function processRenewal(array $signedTransactionInfo, array $signedRenewalInfo)
+    {
+
+    }
+
+    private function processCancel(array $signedTransactionInfo, array $signedRenewalInfo)
+    {
+
+    }
+
+    public function transactionStore(Request $request)
+    {
+        $trasaction = new StoreAppleTransactionAction();
+        return $trasaction->execute($request);
     }
 
     private function decodToken($response)
@@ -129,21 +177,5 @@ n0LvlM7vps2YslVTamRYL4aSs5k=
         $decoded = JWT::decode($response, new key($publicKey, 'HS256'));
         $decodedArray = (array) $decoded;
         return $decodedArray;
-    }
-
-    private function processRenewal($payload)
-    {
-        // Lógica para tratar a renovação
-    }
-
-    private function processCancellation($payload)
-    {
-        // Lógica para tratar o cancelamento
-    }
-
-    public function transactionStore(Request $request)
-    {
-        $trasaction = new StoreAppleTransactionAction();
-        return $trasaction->execute($request);
     }
 }

@@ -20,6 +20,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::patch('/reset-password', [AuthController::class, 'resetPassword']);
 Route::delete('deleteUserAccount', [ UserController::class, 'deleteUserAccount']);
+
+// Apple routes
 Route::get('/appstore/jwt', [AppStoreController::class, 'getJwt']);
 Route::get('/appstore/jwtNotification', [AppStoreController::class, 'getNotificationToken']);
 Route::post('/apple/notifications', [AppStoreController::class, 'handleNotification']);
