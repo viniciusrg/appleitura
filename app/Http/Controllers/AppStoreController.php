@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Actions\Apple\HandlenotificationAction;
+use App\Http\Actions\Apple\HandleNotificationAction;
 use App\Http\Actions\Apple\StoreAppleTransactionAction;
 use App\Services\JwtApiService;
 use App\Services\JwtNotificationService;
