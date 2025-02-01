@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class HandlenotificationAction
+class HandleNotificationAction
 {
     public function execute(Request $request)
     {
