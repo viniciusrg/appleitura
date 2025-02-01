@@ -7,9 +7,6 @@ use Illuminate\Database\Seeder;
 
 class CategoriesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $categories = [
@@ -21,8 +18,20 @@ class CategoriesSeeder extends Seeder
             'Gratuito'
         ];
 
-        foreach ($categories as $category) {
-            Category::create(['name' => $category]);
+        $productId = [
+            'com.app.livall',
+            'teste',
+            'teste',
+            'teste',
+            'teste',
+            'teste',
+        ];
+
+        foreach ($categories as $index => $category) {
+            Category::create([
+                'name' => $category,
+                'productId' => $productId[$index], // Associa o productId correspondente
+            ]);
         }
     }
 }
