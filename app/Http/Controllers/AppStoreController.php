@@ -34,7 +34,7 @@ class AppStoreController extends Controller
 
     public function handleNotification(Request $request)
     {
-        $handleNotification = new HandlenotificationAction();
+        $handleNotification = new HandleNotificationAction();
         return $handleNotification->execute($request);
     }
 
