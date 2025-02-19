@@ -15,12 +15,16 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $isCategory = $this->categories()->get();
+        $subcategories = $this->subcategories()->get();
+        $categories = $subcategories->map(function ($subcategory) {
+            return $subcategory->category ? $subcategory->category->name : null;
+        })->filter();
+
         return [
             'id' => $this->id,
             'email' => $this->email,
             'created_at' => Carbon::make($this->created_at)->format('Y-m-d'),
-            'category' => $isCategory ?  $isCategory->pluck('name') : null,
+            'categories' => $categories,
         ];
     }
 }

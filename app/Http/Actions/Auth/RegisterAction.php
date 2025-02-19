@@ -26,7 +26,7 @@ class RegisterAction
             $token = $user->createToken('authToken')->plainTextToken;
             $expiresAt = Carbon::now()->addMinutes(config('sanctum.expiration'))->toDateTimeString();
 
-            $user->categories()->attach(6);
+            $user->subcategories()->attach(16);
 
             DB::commit();
 
@@ -37,7 +37,7 @@ class RegisterAction
                 'expires_at' => $expiresAt
             ], 201);
         } catch (\Exception $e) {
-            DB::roolBack();
+            DB::rollBack();
             Log::error(['User register error: ' . $e]);
             return response()->json(['message' => $e->getMessage()], 500);
         }

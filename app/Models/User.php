@@ -58,10 +58,15 @@ class User extends Authenticatable
         return $this->hasOne(Question::class);
     }
 
-    public function categories()
+    public function subcategories()
     {
-        return $this->BelongsToMany(Category::class, 'user_category');
+        return $this->belongsToMany(Subcategory::class, 'user_category', 'user_id', 'subcategory_id');
     }
+
+    // public function categories()
+    // {
+    //     return $this->BelongsToMany(Category::class, 'user_category');
+    // }
 
     public function permission()
     {

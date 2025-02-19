@@ -4,6 +4,7 @@ namespace App\Http\Actions\Apple;
 
 use App\Models\AppleTransaction;
 use App\Models\Category;
+use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -46,18 +47,24 @@ class HandleNotificationAction
 
             $notificationType = $signedTransactionInfo[1]->transactionReason ?? null;
 
-            $category = Category::where('productId', $signedTransactionInfo[1]->productId)
+            $subcategory = Subcategory::where('productId', $signedTransactionInfo[1]->productId)
                 ->orderBy('created_at', 'desc')
                 ->firstOrFail();
+
             $transaction = AppleTransaction::where('transactionId', $signedTransactionInfo[1]->transactionId)->first();
             $user = User::where('id', $transaction->user_id)->first();
 
             switch ($notificationType) {
-                case ('SUBSCRIBED' || 'PURCHASE' || 'DID_RENEW'):
-                    $this->processSubscribed($signedTransactionInfo, $signedRenewalInfo, $category, $user);
+                case 'SUBSCRIBED':
+                case 'PURCHASE':
+                case 'DID_RENEW':
+                    $this->processSubscribed($signedTransactionInfo, $signedRenewalInfo, $subcategory, $user);
                     break;
-                case ('EXPIRED' || 'DID_FAIL_TO_RENEW' || 'REFUND'):
-                    $this->processCancel($signedTransactionInfo, $signedRenewalInfo, $category, $user);
+
+                case 'EXPIRED':
+                case 'DID_FAIL_TO_RENEW':
+                case 'REFUND':
+                    $this->processCancel($signedTransactionInfo, $signedRenewalInfo, $subcategory, $user);
                     break;
 
                 default:
@@ -71,21 +78,21 @@ class HandleNotificationAction
         }
     }
 
-    private function processSubscribed(array $signedTransactionInfo, array $signedRenewalInfo, Category $category, User $user): void
+    private function processSubscribed(array $signedTransactionInfo, array $signedRenewalInfo, Subcategory $subcategory, User $user): void
     {
         Log::info('Assinatura comprada', [$signedTransactionInfo, $signedRenewalInfo]);
 
-        $isEmpty = $user->categories()->where('category_id', $category->id)->get()->isEmpty();
+        $isEmpty = $user->subcategories()->where('category_id', $subcategory->id)->get()->isEmpty();
         if ($isEmpty) {
-            $user->categories()->attach($category->id);
+            $user->subcategories()->attach($subcategory->id);
         }
     }
 
-    private function processCancel(array $signedTransactionInfo, array $signedRenewalInfo, Category $category, User $user): void
+    private function processCancel(array $signedTransactionInfo, array $signedRenewalInfo, Subcategory $subcategory, User $user): void
     {
         Log::info('Assinatura cancelada', [$signedTransactionInfo, $signedRenewalInfo]);
 
-        $user->categories()->detach($category->id);
-        $user->tokens()->delete();
+        $user->subcategories()->detach($subcategory->id);
+        // $user->tokens()->delete();
     }
 }
