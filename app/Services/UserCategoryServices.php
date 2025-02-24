@@ -8,6 +8,6 @@ class UserCategoryServices
 {
     public static function getCategoryIds(User $user)
     {
-        return $user->subcategories->pluck('id')->toArray();
+        return $user->subcategories->pluck('category_id')->toArray();
     }
 }
