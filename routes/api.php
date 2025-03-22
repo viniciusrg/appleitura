@@ -81,7 +81,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/sendNotification', [PushNotificationController::class, 'send']);
         Route::get('/pushNotification', [PushNotificationController::class, 'show']);
 
+        // AppleStore
         Route::post('/transaction', [AppStoreController::class, 'transactionStore']);
+
+        // GooglePlay
+        Route::post('/googlePlay/verifyPurchase', [GooglePlayController::class, 'verifyPurchase']);
     });
 
     // Admin routes

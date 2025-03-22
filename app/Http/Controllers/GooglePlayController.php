@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\GooglePlayService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class GooglePlayController extends Controller
@@ -32,7 +33,7 @@ class GooglePlayController extends Controller
             $validated['purchase_token'],
             $validated['subscription_id']
         );
-        
+
         return response()->json($result);
     }
 
@@ -41,7 +42,10 @@ class GooglePlayController extends Controller
      */
     public function verifyPurchase(Request $request)
     {
-        Log::info("GooglePlay - APP", $request->all());
+        Log::info("GooglePlay - APP", [
+            'Request: ' => $request->all(),
+            'UserId: ' => Auth::id(),
+        ]);
         $validated = $request->validate([
             'subscription_id' => 'required|string',
             'purchase_token' => 'required|string',
@@ -51,7 +55,7 @@ class GooglePlayController extends Controller
         try {
             // Verificar a assinatura na Google Play
             $result = $this->googlePlayService->verifySubscription(
-                $validated['purchase_token'], 
+                $validated['purchase_token'],
                 $validated['subscription_id']
             );
 
@@ -63,10 +67,10 @@ class GooglePlayController extends Controller
             }
 
             $purchaseData = $result['data'];
-            
+
             // Processar o status da assinatura
             $subscriptionStatus = $this->processSubscriptionStatus($purchaseData);
-            
+
             // Registrar ou atualizar a assinatura no banco de dados
             $subscription = $this->storeSubscription(
                 $validated['user_id'],
@@ -86,7 +90,7 @@ class GooglePlayController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Erro ao verificar assinatura Google: ' . $e->getMessage());
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Erro ao processar a verificação da assinatura',
@@ -110,77 +114,77 @@ class GooglePlayController extends Controller
         try {
             // Validar e extrair dados da notificação
             $notification = $request->all();
-            
+
             // Verificar se é uma notificação válida
             if (!isset($notification['message']) || !isset($notification['message']['data'])) {
                 return response()->json(['success' => false, 'message' => 'Dados da notificação inválidos'], 400);
             }
-            
+
             // Decodificar os dados da notificação (geralmente é base64)
             $data = json_decode(base64_decode($notification['message']['data']), true);
-            
+
             if (!$data) {
                 return response()->json(['success' => false, 'message' => 'Dados da notificação não podem ser decodificados'], 400);
             }
-            
+
             // Extrair informações relevantes
             $subscriptionNotification = $data['subscriptionNotification'] ?? null;
-            
+
             if (!$subscriptionNotification) {
                 return response()->json(['success' => false, 'message' => 'Notificação não contém dados de assinatura'], 400);
             }
-            
+
             // Extrair detalhes da assinatura
             $purchaseToken = $subscriptionNotification['purchaseToken'] ?? null;
             $subscriptionId = $subscriptionNotification['subscriptionId'] ?? null;
             $notificationType = $subscriptionNotification['notificationType'] ?? null;
-            
+
             if (!$purchaseToken || !$subscriptionId || !$notificationType) {
                 return response()->json(['success' => false, 'message' => 'Informações essenciais ausentes na notificação'], 400);
             }
-            
+
             // Verificar o estado atual da assinatura na Google Play
             $result = $this->googlePlayService->verifySubscription($purchaseToken, $subscriptionId);
-            
+
             if (!$result['success']) {
                 Log::error('Falha ao verificar assinatura após notificação', [
                     'purchase_token' => $purchaseToken,
                     'subscription_id' => $subscriptionId,
                     'error' => $result['message']
                 ]);
-                
+
                 // Mesmo com erro, retornamos sucesso para a Google para evitar reenvios
                 return response()->json(['success' => true]);
             }
-            
+
             // Buscar a assinatura no banco de dados
             $subscription = Subscription::where('purchase_token', $purchaseToken)
                 ->where('product_id', $subscriptionId)
                 ->where('provider', 'google_play')
                 ->first();
-            
+
             // Se não encontrar a assinatura, pode ter sido uma compra fora do app ou outros cenários
             if (!$subscription) {
                 Log::warning('Notificação recebida para assinatura não registrada', [
                     'purchase_token' => $purchaseToken,
                     'subscription_id' => $subscriptionId
                 ]);
-                
+
                 // Mesmo assim, retornamos sucesso para a Google
                 return response()->json(['success' => true]);
             }
-            
+
             // Processar o status da assinatura
             $purchaseData = $result['data'];
             $subscriptionStatus = $this->processSubscriptionStatus($purchaseData);
-            
+
             // Atualizar a assinatura no banco de dados
             $this->updateSubscription($subscription, $purchaseData, $subscriptionStatus);
-            
+
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             Log::error('Erro ao processar notificação Google Play: ' . $e->getMessage());
-            
+
             // Retornamos sucesso mesmo em caso de erro para evitar reenvios
             return response()->json(['success' => true]);
         }
@@ -194,18 +198,18 @@ class GooglePlayController extends Controller
         // Obter o estado da assinatura
         $paymentState = $purchaseData->getPaymentState() ?? null;
         $expiryTimeMillis = $purchaseData->getExpiryTimeMillis() ?? null;
-    
+
         // Converter milissegundos para timestamp Unix (segundos)
         $expiryTime = $expiryTimeMillis ? (int)($expiryTimeMillis / 1000) : null;
         $now = time();
-        
+
         // Verificar se a assinatura está ativa
         $isActive = $paymentState == 1 && ($expiryTime > $now);
-        
+
         // Obter outros estados relevantes
         $autoRenewing = $purchaseData->getAutoRenewing() ?? false;
         $cancelReason = $purchaseData->getCancelReason() ?? null;
-        
+
         return [
             'active' => $isActive,
             'expires_at' => $expiryTime ? Carbon::createFromTimestamp($expiryTime) : null,
@@ -238,10 +242,10 @@ class GooglePlayController extends Controller
                 'provider_data' => $status['raw_response']
             ]
         );
-        
+
         // Atualizar status de assinatura do usuário
         $user = User::find($userId);
-        
+
         if ($user && $status['active']) {
             $user->has_active_subscription = true;
             $user->subscription_ends_at = $status['expires_at'];
@@ -252,14 +256,14 @@ class GooglePlayController extends Controller
                 ->where('status', 'active')
                 ->where('id', '!=', $subscription->id)
                 ->exists();
-            
+
             if (!$hasOtherActiveSubscriptions) {
                 $user->has_active_subscription = false;
                 $user->subscription_ends_at = null;
                 $user->save();
             }
         }
-        
+
         return $subscription;
     }
 
@@ -275,10 +279,10 @@ class GooglePlayController extends Controller
         $subscription->cancel_reason = $status['cancel_reason'];
         $subscription->provider_data = $status['raw_response'];
         $subscription->save();
-        
+
         // Atualizar status de assinatura do usuário
         $user = User::find($subscription->user_id);
-        
+
         if ($user) {
             if ($status['active']) {
                 $user->has_active_subscription = true;
@@ -289,16 +293,16 @@ class GooglePlayController extends Controller
                     ->where('status', 'active')
                     ->where('id', '!=', $subscription->id)
                     ->exists();
-                
+
                 if (!$hasOtherActiveSubscriptions) {
                     $user->has_active_subscription = false;
                     $user->subscription_ends_at = null;
                 }
             }
-            
+
             $user->save();
         }
-        
+
         return $subscription;
     }
 }
