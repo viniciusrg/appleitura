@@ -6,6 +6,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChapterController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\GooglePlayController;
 use App\Http\Controllers\KeepReadingController;
 use App\Http\Controllers\PopupController;
 use App\Http\Controllers\PushNotificationController;
@@ -20,6 +21,15 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::patch('/reset-password', [AuthController::class, 'resetPassword']);
 Route::delete('deleteUserAccount', [ UserController::class, 'deleteUserAccount']);
+
+// Google Routes
+Route::prefix('googlePlay')->group(function () {
+    Route::get('/test-connection', [GooglePlayController::class, 'testConnection']);
+    Route::post('/verify-subscription', [GooglePlayController::class, 'verifySubscription']);
+    Route::post('/verifyPurchase', [GooglePlayController::class, 'verifyPurchase']);
+    // Webhook
+    Route::post('/notifications', [GooglePlayController::class, 'handleNotification']);
+});
 
 // Apple routes
 Route::get('/appstore/jwt', [AppStoreController::class, 'getJwt']);
