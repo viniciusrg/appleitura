@@ -3,7 +3,6 @@
 namespace App\Http\Actions\Apple;
 
 use App\Models\AppleTransaction;
-use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\User;
 use Illuminate\Http\Request;
